@@ -33,21 +33,25 @@ function UploadProductPage() {
         {key:7, value:'Antaractica'},
         
     ]
+
+    const updateImages = (newImages) => {
+        setImages(newImages)
+    }
     return (
         <div>
             <div style={{maxWidth:'700px', margin:'2rem auto'}}>
                 <div style={{textAlign: 'center', marginBottom:'2rem'}}>
-                    <h2>여행 상품 업로드</h2>
+                    <h2>여행 상품 이미지를 올려주세요 !</h2>
                 </div>
 
                 <Form>
 
                     {/*Drop Zone*/}
-                    <FileUpload/>
+                    <FileUpload refreshFunction={updateImages}/>  {/* fileUpload에서 올라오는 Images 정보를 받기 위함. */}
 
                     <br/>
                     <br/>
-                    <label>이름</label>
+                    <label>여행지</label>
                     <Input placeholder="상품명을 입력해주세요." value ={Title} onChange={titleChangeHolder}/>
                     <br/>
                     <br/>
@@ -55,7 +59,7 @@ function UploadProductPage() {
                     <TextArea onChange={descriptionChangeHandler} placeholder="상품 상세 정보를 입력해주세요." vlaue = {Description}/>
                     <br/>
                     <br/>
-                    <label>가격($)</label>
+                    <label>상품 가격($)</label>
                     <Input type="number" placeholder="가격을 입력해주세요." value ={Price} onChange={priceChangeHandler}/>
                     <br/>
                     <br/>

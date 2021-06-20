@@ -3,7 +3,7 @@ import Dropzone from 'react-dropzone'
 import {Icon} from 'antd'
 import Axios from 'axios'
 
-function FileUpload() {
+function FileUpload(props) {
 
     const [Images, setImages] = useState([])
 
@@ -20,10 +20,21 @@ function FileUpload() {
                 if(response.data.success){
                     //console.log(response.data)
                     setImages([...Images, response.data.filePath]) //spread operaton 배열에 모든 이미지들을 넣어줌.
+                    props.refreshFunction([...Images, response.data.filePath]) // 부모 컴포넌트인 UploadProfuctPage로 현재 이미지 정보 전달
+
                 }else{
                     alert("파일 저장에 실패했습니다.")
                 }
             })
+    }
+
+    const deleteHandler = (image) =>{
+        const currentIndex = Images.indexOf(image)
+        //console.log('currentIndex :',currentIndex)
+        let newImages = [...Images]
+        newImages.splice(currentIndex,1)
+        setImages(newImages)
+        props.refreshFunction(newImages) // 부모 컴포넌트인 UploadProfuctPage로 삭제되고 남은 이미지 정보 전달
     }
 
     return (
@@ -44,7 +55,7 @@ function FileUpload() {
 
         <div style={{display:'flex', width:'300px',height:'240px', overflow:'scroll'}}>
             {Images.map((image,index)=>(
-                <div key={index}>
+                <div key={index} onClick={()=>deleteHandler(image)}>
                     <img style={{ minWidht:'300px', width:'300px', height:'240px'}}
                     src={`http://localhost:5000/${image}`}
                     />
